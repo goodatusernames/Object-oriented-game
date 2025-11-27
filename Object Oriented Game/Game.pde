@@ -18,7 +18,9 @@ void setup() {
 
 void draw() {
 
-
+  ship.move();
+  ellipse(width/2, height/2, 10,10);
+  println(ship.rotation);
 
   //camera movement
   if (w) {
@@ -26,20 +28,17 @@ void draw() {
   } else if ((!s)&&(!w)) {
     squareY = 0;
   }
-
   if (a) {
     squareX = -200;
   } else {
     if ((!d)&&(!a))
       squareX = 0;
   }
-
   if (s) {
     squareY = 200;
   } else if ((!s)&&(!w)) {
     squareY = 0;
   }
-
   if (d) {
     squareX = 200;
   } else if ((!d)&&(!a)) {
@@ -57,9 +56,7 @@ void draw() {
   stroke(102, 255, 100);
   rect((400 + squareX), (400 + squareY), 500, 500);
   //end movement section
-  ship.move();
-  ellipse(width/2, height/2, 10,10);
-  println(ship.fakeVelocity);
+  
 }//end draw
 
 void keyPressed() {
@@ -68,7 +65,9 @@ void keyPressed() {
   if(key == 'w'){
    ship.moving = true; 
   }
-  
+  if(key == 's'){
+    ship.slowing = true;
+  }  
   if (key == 'a') {
     ship.rotationLeft = true;
   }
@@ -101,6 +100,9 @@ void keyReleased() {
   //ship movement
     if(key == 'w'){
    ship.moving = false; 
+  }
+    if(key == 's'){
+    ship.slowing = false;
   }
   if (key == 'a') {
     ship.rotationLeft = false;

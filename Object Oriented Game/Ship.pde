@@ -1,10 +1,11 @@
 class Ship {
   boolean moving;
+  boolean slowing;
   boolean rotationLeft;
   boolean rotationRight;
   PVector position;
   float fakeVelocity; 
-  float fakeAcceleration = .1;
+  float fakeAcceleration = .3;
   float rotation = 0;
   float rotationAmount = 0.02;
 
@@ -13,7 +14,15 @@ class Ship {
   }
   void move() {
     
+    //give the illusion that things are moving
     fakeVelocity = constrain(fakeVelocity,0,15);
+ 
+     if (moving == true) {
+      fakeVelocity += fakeAcceleration;
+    } 
+    if(slowing == true && fakeVelocity >0) {
+      fakeVelocity -= fakeAcceleration*.9;
+    }
     
     if (rotationLeft == true) {
       rotation -= rotationAmount;
@@ -21,12 +30,8 @@ class Ship {
     if (rotationRight == true) {
       rotation += rotationAmount;
     }
-    if (moving == true) {
-      fakeVelocity += fakeAcceleration;
-    } else if(moving == false && fakeVelocity >0) {
-      fakeVelocity -= fakeAcceleration*1.7;
-    }
-   
+ 
+   //place the ship at the center of the screen
     pushMatrix();
     translate(position.x, position.y);
     rotate(rotation);
@@ -36,7 +41,22 @@ class Ship {
 
   void drawShip() {
 
+        //draw flame
+    if (moving == true||fakeVelocity >0) {
+      for (int i = 1; i < 5; i++) {
+        fill(102, 255, 100, random(100, 255));
+        noStroke();
+        circle(0, (i * 5)+fakeVelocity, 8 / i);
+        circle(5, (i * 5)+fakeVelocity+2, 8 / i);
+        circle(-5, (i * 5)+fakeVelocity+2, 8 / i);
+      }
+    }
+    
     //draw ship
+    fill(0);
+    noStroke();
+    rectMode(CENTER);
+    rect(0,10,20,20);
     noFill();
     stroke(102, 255, 100);
     beginShape();
@@ -48,15 +68,5 @@ class Ship {
     vertex(0, -20);
     endShape(CLOSE);
 
-    //draw flame
-    if (moving == true||fakeVelocity >0) {
-      for (int i = 1; i < 5; i++) {
-        fill(102, 255, 100, random(100, 255));
-        noStroke();
-        circle(0, (i * 5)+fakeVelocity, 8 / i);
-        circle(5, (i * 5)+fakeVelocity+2, 8 / i);
-        circle(-5, (i * 5)+fakeVelocity+2, 8 / i);
-      }
-    }
   }//end drawShip
 }//end class
