@@ -24,7 +24,7 @@ class Grid {
 
 
   void display() {
-
+    strokeWeight(1);
     stroke(102, 255, 100, 80);
     line(-1000, position.y, 1000, position.y);
     line(position.x, -1000, position.x, 1000);

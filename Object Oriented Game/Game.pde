@@ -1,6 +1,7 @@
 Ship ship;
 Gun gun;
 //ArrayList<EnemyShip> enemyships = new ArrayList<EnemyShip>();//array of ships
+ArrayList<Bullet> bullets = new ArrayList<Bullet>();//make array of bullets
 ArrayList<AsteroidX> asteroidsX = new ArrayList<AsteroidX>();//array of asteroids
 ArrayList<AsteroidY> asteroidsY = new ArrayList<AsteroidY>();
 ArrayList<Grid> grids = new ArrayList<Grid>();
@@ -35,6 +36,7 @@ void setup() {
 }//end setup
 
 void draw() {
+  
   background(0);
 
   //GRID LAND//
@@ -53,6 +55,26 @@ void draw() {
 
   /////////////
   //GRID LAND//
+
+//BULLET LAND//
+///////////////
+
+ for (int i =0; i<bullets.size(); i++) {
+    Bullet b = bullets.get(i);
+    b.update(fakeVelocity, rotation);
+    b.display();
+    b.bulletHitBox();
+    println(b.position);
+  }
+  
+   if ( bullets.size() >= 1) {
+    if (bullets.get(0).offscreen()) {
+      bullets.remove(0);
+    }
+  }
+
+//BULLET LAND//
+///////////////
 
   //draw ship
   ship.move();
@@ -166,6 +188,11 @@ void draw() {
   }
   //end movement section
 }//end draw
+
+void mousePressed() {
+  //shoot bullet when click
+  bullets.add(new Bullet());
+}//end mousePressed
 
 void keyPressed() {
 

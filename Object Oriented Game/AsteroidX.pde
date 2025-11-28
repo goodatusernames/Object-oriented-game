@@ -32,7 +32,7 @@ boolean offscreen() {
   }//end offscreen
 
   void display() {
-    
+    noStroke();
     fill(255,0,0);
     ellipse(position.x, position.y, 50, 50);
   }//end display

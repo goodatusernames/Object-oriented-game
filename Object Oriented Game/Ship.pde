@@ -33,6 +33,7 @@ class Ship {
     rectMode(CENTER);
     rect(0, 10, 20, 20);
     stroke(102, 255, 100);
+    strokeWeight(1);
     beginShape();
     vertex(0, -20);
     vertex(-10, 0);

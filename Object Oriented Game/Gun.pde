@@ -22,7 +22,9 @@ class Gun {
   }//end display
 
   void drawGun() {
+    strokeWeight(1);
     rect(8, 0, 20, 5);
     ellipse(position.x, position.y, 10, 10);
   }//end drawGun
+  
 }//end gun
