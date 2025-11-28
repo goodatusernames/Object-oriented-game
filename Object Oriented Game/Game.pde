@@ -1,8 +1,8 @@
 Ship ship;
-//Gun gun;
+Gun gun;
 //ArrayList<EnemyShip> enemyships = new ArrayList<EnemyShip>();//array of ships
-ArrayList<AsteroidX> asteroidsX = new ArrayList<AsteroidX>();//array of ships
-ArrayList<AsteroidY> asteroidsY = new ArrayList<AsteroidY>();//array of ships
+ArrayList<AsteroidX> asteroidsX = new ArrayList<AsteroidX>();//array of asteroids
+ArrayList<AsteroidY> asteroidsY = new ArrayList<AsteroidY>();
 int squareX;
 int squareY;
 float fakeVelocity;
@@ -21,11 +21,12 @@ boolean d = false;
 boolean s = false;
 boolean shift = false;
 //end boolean hell
+
 void setup() {
   size(800, 800);
   rectMode(CENTER);
   ship = new Ship(width/2, height/2, fakeVelocity, rotation);
-  //gun = new Gun();
+  gun = new Gun();
 }//end setup
 
 void draw() {
@@ -33,7 +34,9 @@ void draw() {
   //draw ship
   ship.move();
   //display gun
-  //gun.display();
+  gun.display();
+  gun.drawGun();
+  println(gun.position);
 
   //SHIP LAND//
   /////////////
