@@ -1,7 +1,7 @@
 class AsteroidY {
   float v;
   float r;
-  float radius = 50;
+  float radius = 40;
   float rockX;
   float rockY;
   PVector velo;
@@ -35,6 +35,6 @@ boolean offscreen() {
   void display() {
     noStroke();
     fill(255,0,0);
-    ellipse(position.x, position.y, radius, radius);
+    ellipse(position.x, position.y, 50, 50);
   }//end display
 }//end class

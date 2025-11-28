@@ -16,6 +16,7 @@ float rotationAmount = 0.02;
 int maxAsteroids = 40;
 int gridSize = 0;
 int gridMax = 500;
+int life = 5;
 //boolean hell
 boolean moving;
 boolean slowing;
@@ -26,6 +27,7 @@ boolean a = false;
 boolean d = false;
 boolean s = false;
 boolean shift = false;
+boolean dead = false;
 //end boolean hell
 
 void setup() {
@@ -38,212 +40,232 @@ void setup() {
 void draw() {
 
   background(0);
-
-  //GRID LAND//
-  /////////////
-  for (int i =0; i<grids.size(); i++) {
-    Grid g = grids.get(i);
-    gridX = -25000 + i * 100;
-    gridY = -25000 + i * 100;
-    g.update(fakeVelocity, rotation);
-    g.display();
-  }
-  //create grid lines
-  if (gridMax>grids.size()) {
-    grids.add(new Grid(gridX, gridY));
-  }
-
-  /////////////
-  //GRID LAND//
-
-  //BULLET LAND//
-  ///////////////
-
-  for (int i =0; i<bullets.size(); i++) {
-    Bullet b = bullets.get(i);
-    b.update(fakeVelocity, rotation);
-    b.display();
-    b.bulletHitBox();
-    println(b.position);
-  }
-
-  if ( bullets.size() >= 1) {
-    if (bullets.get(0).offscreen()) {
-      bullets.remove(0);
-    }
-  }
-
-  //BULLET LAND//
-  ///////////////
-
-  //draw ship
-  ship.move();
-  //display gun
-  gun.display();
-  gun.drawGun();
-
-  //SHIP LAND//
-  /////////////
-  /*
-  //initialize enemies
-   for (int i =0; i<enemyships.size(); i++) {
-   EnemyShip s = enemyships.get(i);
-   s.update(fakeVelocity, rotation);
-   s.display();
-   }
-   
-   //create enemy if there are none
-   if (1>enemyships.size()) {
-   enemyships.add(new EnemyShip());
-   }
-   /////////////
-   //SHIP LAND//
-   */
-  //ASTEROID LAND//
-  /////////////////
-
-  //initialze asteroids for X
-  for (int i =0; i<asteroidsX.size(); i++) {
-    AsteroidX ax = asteroidsX.get(i);
-    ax.update(fakeVelocity, rotation);
-    ax.display();
-
-    //delete when too far away
-    if (asteroidsX.get(i).offscreen()) {
-      asteroidsX.remove(i);
-    }
-  }
-  //create asteroids until max
-  if (maxAsteroids>asteroidsX.size()) {
-    asteroidsX.add(new AsteroidX());
-  }
-  //initialize for Y
-  for (int i =0; i<asteroidsY.size(); i++) {
-    AsteroidY ay = asteroidsY.get(i);
-    ay.update(fakeVelocity, rotation);
-    ay.display();
-    //delete when too far away
-    if (asteroidsY.get(i).offscreen()) {
-      asteroidsY.remove(i);
-    }
-  }
-  //create asteroids until max
-  if (maxAsteroids>asteroidsY.size()) {
-    asteroidsY.add(new AsteroidY());
-  }
-
-  /////////////////
-  //ASTEROID LAND//
-
-
-  //camera movement
-  if (w) {
-    squareY = -200;
-  } else if ((!s)&&(!w)) {
-    squareY = 0;
-  }
-  if (a) {
-    squareX = -200;
-  } else {
-    if ((!d)&&(!a))
-      squareX = 0;
-  }
-  if (s) {
-    squareY = 200;
-  } else if ((!s)&&(!w)) {
-    squareY = 0;
-  }
-  if (d) {
-    squareX = 200;
-  } else if ((!d)&&(!a)) {
-    squareX = 0;
-  }
-  //draw box
-
-  fill(0);
-  noStroke();
-  rect((-100 + squareX), (400 + squareY), 500, 1400);
-  rect((900 + squareX), (400 + squareY), 500, 1400);
-  rect((400 + squareX), (900 + squareY), 1400, 500);
-  rect((400 + squareX), (-100 + squareY), 1400, 500);
-  noFill();
-  stroke(102, 255, 100);
-  rect((400 + squareX), (400 + squareY), 500, 500);
-
-  //give the illusion that things are moving
-  fakeVelocity = constrain(fakeVelocity, 0, 15);
-
-  if (moving == true) {
-    fakeVelocity += fakeAcceleration;
-  }
-  if (slowing == true && fakeVelocity >0) {
-    fakeVelocity -= fakeAcceleration*.9;
-  }
-  if (rotationLeft == true) {
-    rotation -= rotationAmount;
-  }
-  if (rotationRight == true) {
-    rotation += rotationAmount;
-  }
-  //end movement section
-
-  //ASTEROID DELETER 9000//
-  /////////////////////////
-
-  //start collision AsteroidX
-  if ( bullets.size() >= 1 && asteroidsX.size() >=1) {
-    for (int i =0; i<bullets.size(); i++) {
-      for (int u =0; u<asteroidsX.size(); u++) {
-        if (collision(bullets.get(i), asteroidsX.get(u))) {
-          //delete ship that was collided with
-          asteroidsX.remove(u);
-          bullets.remove(i);
-          //make the ships on screen move faster when their friends are killed
-          break;
-        }
-      }
-    }
-  }//end collision AsteroidX
-
-  //start collision AsteroidY
-  if ( bullets.size() >= 1 && asteroidsY.size() >= 1) {
-    for (int i =0; i<bullets.size(); i++) {
-      for (int y =0; y<asteroidsY.size(); y++) {
-        if (collision(bullets.get(i), asteroidsY.get(y))) {
-          //delete ship that was collided with
-          asteroidsY.remove(y);
-          bullets.remove(i);
-          //make the ships on screen move faster when their friends are killed
-          break;
-        }
-      }
-    }
-  }//end collision AsteroidY
-
-  //Ship AsteroidY
-  if (asteroidsY.size() >= 1) {
-    for (int y =0; y<asteroidsY.size(); y++) {
-      if (shipCollision(ship, asteroidsY.get(y))){
-        asteroidsY.remove(y);
-        break;
-      }
-    }
-  }//end Ship AsteroidY
+  println(life);
   
-    //Ship AsteroidY
-  if (asteroidsX.size() >= 1) {
-    for (int u =0; u<asteroidsX.size(); u++) {
-      if (shipCollision(ship, asteroidsX.get(u))){
-        asteroidsX.remove(u);
-        break;
+  //check if dead
+  if(life <=0){
+    dead = true;
+  }
+  
+  if (!dead) {//turn off the entire game if you're dead
+
+    //GRID LAND//
+    /////////////
+    for (int i =0; i<grids.size(); i++) {
+      Grid g = grids.get(i);
+      gridX = -25000 + i * 100;
+      gridY = -25000 + i * 100;
+      g.update(fakeVelocity, rotation);
+      g.display();
+    }
+    //create grid lines
+    if (gridMax>grids.size()) {
+      grids.add(new Grid(gridX, gridY));
+    }
+
+    /////////////
+    //GRID LAND//
+
+    //BULLET LAND//
+    ///////////////
+
+    for (int i =0; i<bullets.size(); i++) {
+      Bullet b = bullets.get(i);
+      b.update(fakeVelocity, rotation);
+      b.display();
+      b.bulletHitBox();
+    }
+
+    if ( bullets.size() >= 1) {
+      if (bullets.get(0).offscreen()) {
+        bullets.remove(0);
       }
     }
-  }//end Ship AsteroidY
+
+    //BULLET LAND//
+    ///////////////
+
+    //draw ship
+    ship.move();
+    //display gun
+    gun.display();
+    gun.drawGun();
+
+    //SHIP LAND//
+    /////////////
+    /*
+  //initialize enemies
+     for (int i =0; i<enemyships.size(); i++) {
+     EnemyShip s = enemyships.get(i);
+     s.update(fakeVelocity, rotation);
+     s.display();
+     }
+     
+     //create enemy if there are none
+     if (1>enemyships.size()) {
+     enemyships.add(new EnemyShip());
+     }
+     /////////////
+     //SHIP LAND//
+     */
+    //ASTEROID LAND//
+    /////////////////
+
+    //initialze asteroids for X
+    for (int i =0; i<asteroidsX.size(); i++) {
+      AsteroidX ax = asteroidsX.get(i);
+      ax.update(fakeVelocity, rotation);
+      ax.display();
+
+      //delete when too far away
+      if (asteroidsX.get(i).offscreen()) {
+        asteroidsX.remove(i);
+      }
+    }
+    //create asteroids until max
+    if (maxAsteroids>asteroidsX.size()) {
+      asteroidsX.add(new AsteroidX());
+    }
+    //initialize for Y
+    for (int i =0; i<asteroidsY.size(); i++) {
+      AsteroidY ay = asteroidsY.get(i);
+      ay.update(fakeVelocity, rotation);
+      ay.display();
+      //delete when too far away
+      if (asteroidsY.get(i).offscreen()) {
+        asteroidsY.remove(i);
+      }
+    }
+    //create asteroids until max
+    if (maxAsteroids>asteroidsY.size()) {
+      asteroidsY.add(new AsteroidY());
+    }
+
+    /////////////////
+    //ASTEROID LAND//
+
+
+    //camera movement
+    if (w) {
+      squareY = -200;
+    } else if ((!s)&&(!w)) {
+      squareY = 0;
+    }
+    if (a) {
+      squareX = -200;
+    } else {
+      if ((!d)&&(!a))
+        squareX = 0;
+    }
+    if (s) {
+      squareY = 200;
+    } else if ((!s)&&(!w)) {
+      squareY = 0;
+    }
+    if (d) {
+      squareX = 200;
+    } else if ((!d)&&(!a)) {
+      squareX = 0;
+    }
+    //draw box
+
+    fill(0);
+    noStroke();
+    rect((-100 + squareX), (400 + squareY), 500, 1400);
+    rect((900 + squareX), (400 + squareY), 500, 1400);
+    rect((400 + squareX), (900 + squareY), 1400, 500);
+    rect((400 + squareX), (-100 + squareY), 1400, 500);
+    noFill();
+    stroke(102, 255, 100);
+    rect((400 + squareX), (400 + squareY), 500, 500);
+
+    //give the illusion that things are moving
+    fakeVelocity = constrain(fakeVelocity, 0, 15);
+
+    if (moving == true) {
+      fakeVelocity += fakeAcceleration;
+    }
+    if (slowing == true && fakeVelocity >0) {
+      fakeVelocity -= fakeAcceleration*.9;
+    }
+    if (rotationLeft == true) {
+      rotation -= rotationAmount;
+    }
+    if (rotationRight == true) {
+      rotation += rotationAmount;
+    }
+    //end movement section
+
+    //ASTEROID DELETER 9000//
+    /////////////////////////
+
+    //start collision AsteroidX
+    if ( bullets.size() >= 1 && asteroidsX.size() >=1) {
+      for (int i =0; i<bullets.size(); i++) {
+        for (int u =0; u<asteroidsX.size(); u++) {
+          if (collision(bullets.get(i), asteroidsX.get(u))) {
+            //delete ship that was collided with
+            asteroidsX.remove(u);
+            bullets.remove(i);
+            //make the ships on screen move faster when their friends are killed
+            break;
+          }
+        }
+      }
+    }//end collision AsteroidX
+
+    //start collision AsteroidY
+    if ( bullets.size() >= 1 && asteroidsY.size() >= 1) {
+      for (int i =0; i<bullets.size(); i++) {
+        for (int y =0; y<asteroidsY.size(); y++) {
+          if (collision(bullets.get(i), asteroidsY.get(y))) {
+            //delete ship that was collided with
+            asteroidsY.remove(y);
+            bullets.remove(i);
+            //make the ships on screen move faster when their friends are killed
+            break;
+          }
+        }
+      }
+    }//end collision AsteroidY
+
+    //Ship AsteroidY
+    if (asteroidsY.size() >= 1) {
+      for (int y =0; y<asteroidsY.size(); y++) {
+        if (shipCollision(ship, asteroidsY.get(y))) {
+          asteroidsY.remove(y);
+          life = life -1;
+          break;
+        }
+      }
+    }//end Ship AsteroidY
+
+    //Ship AsteroidY
+    if (asteroidsX.size() >= 1) {
+      for (int u =0; u<asteroidsX.size(); u++) {
+        if (shipCollision(ship, asteroidsX.get(u))) {
+          asteroidsX.remove(u);
+          life = life -1;
+          break;
+        }
+      }
+    }//end Ship AsteroidY
 
 
 
-  //ASTEROID DELETER 9000//
-  /////////////////////////
+    //ASTEROID DELETER 9000//
+    /////////////////////////
+  } else { //if dead end
+    asteroidsX.clear();
+    asteroidsY.clear();
+    bullets.clear();
+    grids.clear();
+    fill(102, 255, 100);
+    textSize(100);
+    text("You died", 200, 300);
+    textSize(20);
+    text("press 'R' to restart!", 300, 600);
+  }//else end
 }//end draw
 
 //COLLISION DETECTOR//
@@ -322,6 +344,12 @@ void mousePressed() {
 }//end mousePressed
 
 void keyPressed() {
+
+  //restart game
+  if (key == 'r') {
+    dead = false;
+    life = 5;
+  }
 
   //ship movement
   if (key == 'w') {

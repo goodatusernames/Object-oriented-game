@@ -1,6 +1,6 @@
 class Ship {
   PVector position;
-float radius = 30;
+float radius = 8;
   Ship(float x, float y, float fakeVelocity, float rotation) {
     position = new PVector(x, y);
   }
