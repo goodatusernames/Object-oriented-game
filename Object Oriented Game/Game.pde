@@ -1,12 +1,14 @@
 Ship ship;
 Gun gun;
 ArrayList<EnemyShip> enemyships = new ArrayList<EnemyShip>();//array of ships
+ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();//array of ships
 int squareX;
 int squareY;
 float fakeVelocity;
 float fakeAcceleration = .3;
 float rotation = 0;
 float rotationAmount = 0.02;
+int maxAsteroids = 25;
 //boolean hell
 boolean moving;
 boolean slowing;
@@ -19,7 +21,7 @@ boolean s = false;
 boolean shift = false;
 //end boolean hell
 void setup() {
-  size(1800, 1000);
+  size(800, 800);
   rectMode(CENTER);
   ship = new Ship(width/2, height/2, fakeVelocity, rotation);
   gun = new Gun();
@@ -32,18 +34,45 @@ void draw() {
   //display gun
   gun.display();
 
+  //SHIP LAND//
+  /////////////
+
   //initialize enemies
   for (int i =0; i<enemyships.size(); i++) {
     EnemyShip s = enemyships.get(i);
     s.update(fakeVelocity, rotation);
     s.display();
-    println(s.position);
   }
 
   //create enemy if there are none
   if (1>enemyships.size()) {
     enemyships.add(new EnemyShip());
   }
+  /////////////
+  //SHIP LAND//
+
+  //ASTEROID LAND//
+  /////////////////
+
+  //initialze asteroids
+  for (int i =0; i<asteroids.size(); i++) {
+    Asteroid a = asteroids.get(i);
+    a.update(fakeVelocity, rotation);
+    a.display();
+    println(a.position);
+    //delete when too far away
+    if (asteroids.get(i).offscreen()) {
+      asteroids.remove(i);
+    }
+  }
+  //create asteroids until max
+  if (maxAsteroids>asteroids.size()) {
+    asteroids.add(new Asteroid());
+  }
+
+  /////////////////
+  //ASTEROID LAND//
+
 
   //camera movement
   if (w) {
@@ -71,10 +100,10 @@ void draw() {
 
   fill(0);
   noStroke();
-  //rect((-100 + squareX), (400 + squareY), 500, 1400);
-  //rect((900 + squareX), (400 + squareY), 500, 1400);
-  //rect((400 + squareX), (900 + squareY), 1400, 500);
-  //rect((400 + squareX), (-100 + squareY), 1400, 500);
+  rect((-100 + squareX), (400 + squareY), 500, 1400);
+  rect((900 + squareX), (400 + squareY), 500, 1400);
+  rect((400 + squareX), (900 + squareY), 1400, 500);
+  rect((400 + squareX), (-100 + squareY), 1400, 500);
   noFill();
   stroke(102, 255, 100);
   rect((400 + squareX), (400 + squareY), 500, 500);
