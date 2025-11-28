@@ -3,13 +3,18 @@ Gun gun;
 //ArrayList<EnemyShip> enemyships = new ArrayList<EnemyShip>();//array of ships
 ArrayList<AsteroidX> asteroidsX = new ArrayList<AsteroidX>();//array of asteroids
 ArrayList<AsteroidY> asteroidsY = new ArrayList<AsteroidY>();
+ArrayList<Grid> grids = new ArrayList<Grid>();
 int squareX;
 int squareY;
+float gridX;
+float gridY;
 float fakeVelocity;
 float fakeAcceleration = .3;
 float rotation = 0;
 float rotationAmount = 0.02;
 int maxAsteroids = 10;
+int gridSize = 0;
+int gridMax = 500;
 //boolean hell
 boolean moving;
 boolean slowing;
@@ -31,30 +36,47 @@ void setup() {
 
 void draw() {
   background(0);
+
+  //GRID LAND//
+  /////////////
+   for (int i =0; i<grids.size(); i++) {
+      Grid g = grids.get(i);
+      gridX = -25000 + i * 100;
+      gridY = -25000 + i * 100;
+      g.update(fakeVelocity, rotation);
+      g.display();
+    }
+  //create grid lines
+  if (gridMax>grids.size()) {
+    grids.add(new Grid(gridX, gridY));
+  }
+
+  /////////////
+  //GRID LAND//
+
   //draw ship
   ship.move();
   //display gun
   gun.display();
   gun.drawGun();
-  println(gun.position);
 
   //SHIP LAND//
   /////////////
-/*
+  /*
   //initialize enemies
-  for (int i =0; i<enemyships.size(); i++) {
-    EnemyShip s = enemyships.get(i);
-    s.update(fakeVelocity, rotation);
-    s.display();
-  }
-
-  //create enemy if there are none
-  if (1>enemyships.size()) {
-    enemyships.add(new EnemyShip());
-  }
-  /////////////
-  //SHIP LAND//
-*/
+   for (int i =0; i<enemyships.size(); i++) {
+   EnemyShip s = enemyships.get(i);
+   s.update(fakeVelocity, rotation);
+   s.display();
+   }
+   
+   //create enemy if there are none
+   if (1>enemyships.size()) {
+   enemyships.add(new EnemyShip());
+   }
+   /////////////
+   //SHIP LAND//
+   */
   //ASTEROID LAND//
   /////////////////
 
@@ -63,7 +85,7 @@ void draw() {
     AsteroidX a = asteroidsX.get(i);
     a.update(fakeVelocity, rotation);
     a.display();
-   
+
     //delete when too far away
     if (asteroidsX.get(i).offscreen()) {
       asteroidsX.remove(i);
@@ -74,7 +96,7 @@ void draw() {
     asteroidsX.add(new AsteroidX());
   }
   //initialize for Y
-    for (int i =0; i<asteroidsY.size(); i++) {
+  for (int i =0; i<asteroidsY.size(); i++) {
     AsteroidY a = asteroidsY.get(i);
     a.update(fakeVelocity, rotation);
     a.display();
@@ -90,6 +112,7 @@ void draw() {
 
   /////////////////
   //ASTEROID LAND//
+
 
 
   //camera movement
