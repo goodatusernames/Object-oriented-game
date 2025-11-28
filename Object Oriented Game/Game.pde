@@ -1,6 +1,6 @@
 Ship ship;
-Gun gun;
-ArrayList<EnemyShip> enemyships = new ArrayList<EnemyShip>();//array of ships
+//Gun gun;
+//ArrayList<EnemyShip> enemyships = new ArrayList<EnemyShip>();//array of ships
 ArrayList<AsteroidX> asteroidsX = new ArrayList<AsteroidX>();//array of ships
 ArrayList<AsteroidY> asteroidsY = new ArrayList<AsteroidY>();//array of ships
 int squareX;
@@ -25,7 +25,7 @@ void setup() {
   size(800, 800);
   rectMode(CENTER);
   ship = new Ship(width/2, height/2, fakeVelocity, rotation);
-  gun = new Gun();
+  //gun = new Gun();
 }//end setup
 
 void draw() {
@@ -33,11 +33,11 @@ void draw() {
   //draw ship
   ship.move();
   //display gun
-  gun.display();
+  //gun.display();
 
   //SHIP LAND//
   /////////////
-
+/*
   //initialize enemies
   for (int i =0; i<enemyships.size(); i++) {
     EnemyShip s = enemyships.get(i);
@@ -51,7 +51,7 @@ void draw() {
   }
   /////////////
   //SHIP LAND//
-
+*/
   //ASTEROID LAND//
   /////////////////
 
@@ -60,7 +60,7 @@ void draw() {
     AsteroidX a = asteroidsX.get(i);
     a.update(fakeVelocity, rotation);
     a.display();
-    println(a.position);
+   
     //delete when too far away
     if (asteroidsX.get(i).offscreen()) {
       asteroidsX.remove(i);
@@ -75,7 +75,6 @@ void draw() {
     AsteroidY a = asteroidsY.get(i);
     a.update(fakeVelocity, rotation);
     a.display();
-    println(a.position);
     //delete when too far away
     if (asteroidsY.get(i).offscreen()) {
       asteroidsY.remove(i);
