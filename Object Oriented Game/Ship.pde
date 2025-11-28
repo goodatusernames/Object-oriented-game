@@ -1,35 +1,10 @@
 class Ship {
-  boolean moving;
-  boolean slowing;
-  boolean rotationLeft;
-  boolean rotationRight;
   PVector position;
-  float fakeVelocity;
-  float fakeAcceleration = .3;
-  float rotation = 0;
-  float rotationAmount = 0.02;
 
-  Ship(float x, float y) {
+  Ship(float x, float y, float fakeVelocity, float rotation) {
     position = new PVector(x, y);
   }
   void move() {
-
-    //give the illusion that things are moving
-    fakeVelocity = constrain(fakeVelocity, 0, 15);
-
-    if (moving == true) {
-      fakeVelocity += fakeAcceleration;
-    }
-    if (slowing == true && fakeVelocity >0) {
-      fakeVelocity -= fakeAcceleration*.9;
-    }
-
-    if (rotationLeft == true) {
-      rotation -= rotationAmount;
-    }
-    if (rotationRight == true) {
-      rotation += rotationAmount;
-    }
 
     //place the ship at the center of the screen
     pushMatrix();

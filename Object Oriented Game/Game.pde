@@ -3,7 +3,15 @@ Gun gun;
 ArrayList<EnemyShip> enemyships = new ArrayList<EnemyShip>();//array of ships
 int squareX;
 int squareY;
+float fakeVelocity;
+float fakeAcceleration = .3;
+float rotation = 0;
+float rotationAmount = 0.02;
 //boolean hell
+boolean moving;
+boolean slowing;
+boolean rotationLeft;
+boolean rotationRight;
 boolean w = false;
 boolean a = false;
 boolean d = false;
@@ -11,9 +19,9 @@ boolean s = false;
 boolean shift = false;
 //end boolean hell
 void setup() {
-  size(800, 800);
+  size(1800, 1000);
   rectMode(CENTER);
-  ship = new Ship(width/2, height/2);
+  ship = new Ship(width/2, height/2, fakeVelocity, rotation);
   gun = new Gun();
 }//end setup
 
@@ -24,10 +32,12 @@ void draw() {
   //display gun
   gun.display();
 
-//initialize enemies
+  //initialize enemies
   for (int i =0; i<enemyships.size(); i++) {
     EnemyShip s = enemyships.get(i);
-    
+    s.update(fakeVelocity, rotation);
+    s.display();
+    println(s.position);
   }
 
   //create enemy if there are none
@@ -61,13 +71,29 @@ void draw() {
 
   fill(0);
   noStroke();
-  rect((-100 + squareX), (400 + squareY), 500, 1400);
-  rect((900 + squareX), (400 + squareY), 500, 1400);
-  rect((400 + squareX), (900 + squareY), 1400, 500);
-  rect((400 + squareX), (-100 + squareY), 1400, 500);
+  //rect((-100 + squareX), (400 + squareY), 500, 1400);
+  //rect((900 + squareX), (400 + squareY), 500, 1400);
+  //rect((400 + squareX), (900 + squareY), 1400, 500);
+  //rect((400 + squareX), (-100 + squareY), 1400, 500);
   noFill();
   stroke(102, 255, 100);
   rect((400 + squareX), (400 + squareY), 500, 500);
+
+  //give the illusion that things are moving
+  fakeVelocity = constrain(fakeVelocity, 0, 15);
+
+  if (moving == true) {
+    fakeVelocity += fakeAcceleration;
+  }
+  if (slowing == true && fakeVelocity >0) {
+    fakeVelocity -= fakeAcceleration*.9;
+  }
+  if (rotationLeft == true) {
+    rotation -= rotationAmount;
+  }
+  if (rotationRight == true) {
+    rotation += rotationAmount;
+  }
   //end movement section
 }//end draw
 
@@ -75,16 +101,16 @@ void keyPressed() {
 
   //ship movement
   if (key == 'w') {
-    ship.moving = true;
+    moving = true;
   }
   if (key == 's') {
-    ship.slowing = true;
+    slowing = true;
   }
   if (key == 'a') {
-    ship.rotationLeft = true;
+    rotationLeft = true;
   }
   if (key == 'd') {
-    ship.rotationRight = true;
+    rotationRight = true;
   }
   //end ship movement
 
@@ -111,16 +137,16 @@ void keyReleased() {
 
   //ship movement
   if (key == 'w') {
-    ship.moving = false;
+    moving = false;
   }
   if (key == 's') {
-    ship.slowing = false;
+    slowing = false;
   }
   if (key == 'a') {
-    ship.rotationLeft = false;
+    rotationLeft = false;
   }
   if (key == 'd') {
-    ship.rotationRight = false;
+    rotationRight = false;
   }
   //end ship movement
 
