@@ -220,6 +220,28 @@ void draw() {
     }
   }//end collision AsteroidY
 
+  //Ship AsteroidY
+  if (asteroidsY.size() >= 1) {
+    for (int y =0; y<asteroidsY.size(); y++) {
+      if (shipCollision(ship, asteroidsY.get(y))){
+        asteroidsY.remove(y);
+        break;
+      }
+    }
+  }//end Ship AsteroidY
+  
+    //Ship AsteroidY
+  if (asteroidsX.size() >= 1) {
+    for (int u =0; u<asteroidsX.size(); u++) {
+      if (shipCollision(ship, asteroidsX.get(u))){
+        asteroidsX.remove(u);
+        break;
+      }
+    }
+  }//end Ship AsteroidY
+
+
+
   //ASTEROID DELETER 9000//
   /////////////////////////
 }//end draw
@@ -227,7 +249,7 @@ void draw() {
 //COLLISION DETECTOR//
 //////////////////////
 
-//AsteroidX list
+//AsteroidX collision
 boolean collision(Bullet b, AsteroidX ax) {
   float bx = b.position.x;
   float by = b.position.y;
@@ -243,7 +265,7 @@ boolean collision(Bullet b, AsteroidX ax) {
   }
 }//end AsteroidX
 
-//AsteroidY
+//AsteroidY collison
 boolean collision(Bullet b, AsteroidY ay) {
   float bx = b.position.x;
   float by = b.position.y;
@@ -258,6 +280,38 @@ boolean collision(Bullet b, AsteroidY ay) {
     return false;
   }
 }//end AsteroidY
+
+//Ship AsteroidY
+boolean shipCollision(Ship s, AsteroidY ay) {
+  float sx = s.position.x;
+  float sy = s.position.y;
+  float sr = s.radius;
+  float ayx = ay.position.x;
+  float ayy = ay.position.y;
+  float ayr = ay.radius;
+  float distanceX = dist (sx, sy, ayx, ayy);
+  if (distanceX < (sr-10) + (ayr-10)) { //checks if bullet collides with asteroid
+    return true;
+  } else {
+    return false;
+  }
+}//end Ship AsteroidY
+
+//Ship AsteroidX
+boolean shipCollision(Ship s, AsteroidX ax) {
+  float sx = s.position.x;
+  float sy = s.position.y;
+  float sr = s.radius;
+  float axx = ax.position.x;
+  float axy = ax.position.y;
+  float axr = ax.radius;
+  float distanceX = dist (sx, sy, axx, axy);
+  if (distanceX < (sr-10) + (axr-10)) { //checks if bullet collides with asteroid
+    return true;
+  } else {
+    return false;
+  }
+}//end Ship AsteroidX
 
 //////////////////////
 //COLLISION DETECTOR//
@@ -338,5 +392,4 @@ void keyReleased() {
   }
 
   //end camera movement
-  
 }//end released
