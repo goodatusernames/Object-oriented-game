@@ -1,17 +1,17 @@
 /*CONTROLS
-W = Throttle up
-S = Throttle down
-A = Turn left
-D = Turn right
-
-SHIFT + WASD = move camera to respective cardinal direction (you can move diagonally)
-Click = Shoot
-
-*/
+ W = Throttle up
+ S = Throttle down
+ A = Turn left
+ D = Turn right
+ 
+ SHIFT + WASD = move camera to respective cardinal direction (you can move diagonally)
+ Click = Shoot
+ 
+ */
 
 Ship ship;
 Gun gun;
-//ArrayList<EnemyShip> enemyships = new ArrayList<EnemyShip>();//array of ships
+ArrayList<EnemyShip> enemyships = new ArrayList<EnemyShip>();//array of ships
 ArrayList<Bullet> bullets = new ArrayList<Bullet>();//make array of bullets
 ArrayList<AsteroidX> asteroidsX = new ArrayList<AsteroidX>();//array of asteroids
 ArrayList<AsteroidY> asteroidsY = new ArrayList<AsteroidY>();
@@ -51,18 +51,18 @@ void setup() {
 void draw() {
 
   background(0);
-  println(life);
-  
+
+
   //check if dead
-  if(life <=0){
+  if (life <=0) {
     dead = true;
   }
-  
+
   if (!dead) {//turn off the entire game if you're dead
 
     //GRID LAND//
     /////////////
-    
+
     for (int i =0; i<grids.size(); i++) {
       Grid g = grids.get(i);
       gridX = -25000 + i * 100;
@@ -105,21 +105,22 @@ void draw() {
 
     //SHIP LAND//
     /////////////
-    /*
-  //initialize enemies
-     for (int i =0; i<enemyships.size(); i++) {
-     EnemyShip s = enemyships.get(i);
-     s.update(fakeVelocity, rotation);
-     s.display();
-     }
-     
-     //create enemy if there are none
-     if (1>enemyships.size()) {
-     enemyships.add(new EnemyShip());
-     }
-     /////////////
-     //SHIP LAND//
-     */
+
+    //initialize enemies
+    for (int i =0; i<enemyships.size(); i++) {
+      EnemyShip s = enemyships.get(i);
+      s.update(fakeVelocity, rotation);
+      s.display();
+      println(s.position);
+    }
+
+    //create enemy if there are none
+    if (1>enemyships.size()) {
+      enemyships.add(new EnemyShip());
+    }
+    /////////////
+    //SHIP LAND//
+
     //ASTEROID LAND//
     /////////////////
 
@@ -267,7 +268,7 @@ void draw() {
     //ASTEROID DELETER 9000//
     /////////////////////////
   } else { //if dead end
-  //clear everything
+    //clear everything
     asteroidsX.clear();
     asteroidsY.clear();
     bullets.clear();
