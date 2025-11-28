@@ -47,7 +47,7 @@ class Bullet {
 
   //checker to see if bullet is off screen
   boolean offscreen() {
-    if (position.y < -200||position.y > 1000|| position.x <-200|| position.y >1000) {
+    if (position.y < 0||position.y > 800|| position.x < 0|| position.y >800) {
       return true;
     } else {
       return false;

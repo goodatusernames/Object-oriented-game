@@ -1,15 +1,16 @@
 class AsteroidY {
   float v;
   float r;
+  float radius = 50;
   float rockX;
   float rockY;
   PVector velo;
   PVector position;
   AsteroidY() {
     if (random(2)>1) {
-      rockY = random(700, 1100);
+      rockY = random(850, 1600);
     } else {
-      rockY = random(-100,100);
+      rockY = random(-800, -50);
     }
     rockX = random(-100,900);
     position = new PVector(rockX, rockY);
@@ -24,7 +25,7 @@ class AsteroidY {
   }//end update
 
 boolean offscreen() {
-    if (position.x > 1500||position.x<-600||position.y>1500||position.y<-500) {
+    if (position.x > 2000||position.x<-1100||position.y>2000||position.y<-1100) {
       return true;
     } else {
       return false;
@@ -34,6 +35,6 @@ boolean offscreen() {
   void display() {
     noStroke();
     fill(255,0,0);
-    ellipse(position.x, position.y, 50, 50);
+    ellipse(position.x, position.y, radius, radius);
   }//end display
 }//end class
