@@ -1,6 +1,6 @@
 Ship ship;
 Gun gun;
-
+ArrayList<EnemyShip> enemyships = new ArrayList<EnemyShip>();//array of ships
 int squareX;
 int squareY;
 //boolean hell
@@ -18,11 +18,22 @@ void setup() {
 }//end setup
 
 void draw() {
-
   background(0);
+  //draw ship
   ship.move();
+  //display gun
   gun.display();
 
+//initialize enemies
+  for (int i =0; i<enemyships.size(); i++) {
+    EnemyShip s = enemyships.get(i);
+    
+  }
+
+  //create enemy if there are none
+  if (1>enemyships.size()) {
+    enemyships.add(new EnemyShip());
+  }
 
   //camera movement
   if (w) {
