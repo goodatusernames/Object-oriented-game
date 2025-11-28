@@ -1,14 +1,15 @@
 Ship ship;
 Gun gun;
 ArrayList<EnemyShip> enemyships = new ArrayList<EnemyShip>();//array of ships
-ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();//array of ships
+ArrayList<AsteroidX> asteroidsX = new ArrayList<AsteroidX>();//array of ships
+ArrayList<AsteroidY> asteroidsY = new ArrayList<AsteroidY>();//array of ships
 int squareX;
 int squareY;
 float fakeVelocity;
 float fakeAcceleration = .3;
 float rotation = 0;
 float rotationAmount = 0.02;
-int maxAsteroids = 25;
+int maxAsteroids = 10;
 //boolean hell
 boolean moving;
 boolean slowing;
@@ -54,20 +55,35 @@ void draw() {
   //ASTEROID LAND//
   /////////////////
 
-  //initialze asteroids
-  for (int i =0; i<asteroids.size(); i++) {
-    Asteroid a = asteroids.get(i);
+  //initialze asteroids for X
+  for (int i =0; i<asteroidsX.size(); i++) {
+    AsteroidX a = asteroidsX.get(i);
     a.update(fakeVelocity, rotation);
     a.display();
     println(a.position);
     //delete when too far away
-    if (asteroids.get(i).offscreen()) {
-      asteroids.remove(i);
+    if (asteroidsX.get(i).offscreen()) {
+      asteroidsX.remove(i);
     }
   }
   //create asteroids until max
-  if (maxAsteroids>asteroids.size()) {
-    asteroids.add(new Asteroid());
+  if (maxAsteroids>asteroidsX.size()) {
+    asteroidsX.add(new AsteroidX());
+  }
+  //initialize for Y
+    for (int i =0; i<asteroidsY.size(); i++) {
+    AsteroidY a = asteroidsY.get(i);
+    a.update(fakeVelocity, rotation);
+    a.display();
+    println(a.position);
+    //delete when too far away
+    if (asteroidsY.get(i).offscreen()) {
+      asteroidsY.remove(i);
+    }
+  }
+  //create asteroids until max
+  if (maxAsteroids>asteroidsY.size()) {
+    asteroidsY.add(new AsteroidY());
   }
 
   /////////////////
