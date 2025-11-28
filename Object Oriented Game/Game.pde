@@ -13,14 +13,15 @@ void setup() {
   size(800, 800);
   rectMode(CENTER);
   ship = new Ship(width/2, height/2);
-
 }//end setup
 
 void draw() {
+  
+  background(0);
 
   ship.move();
-  ellipse(width/2, height/2, 10,10);
-  println(ship.rotation);
+  ellipse(width/2, height/2, 10, 10);
+ 
 
   //camera movement
   if (w) {
@@ -45,7 +46,7 @@ void draw() {
     squareX = 0;
   }
   //draw box
-  background(0);
+
   fill(0);
   noStroke();
   rect((-100 + squareX), (400 + squareY), 500, 1400);
@@ -56,18 +57,17 @@ void draw() {
   stroke(102, 255, 100);
   rect((400 + squareX), (400 + squareY), 500, 500);
   //end movement section
-  
 }//end draw
 
 void keyPressed() {
 
   //ship movement
-  if(key == 'w'){
-   ship.moving = true; 
+  if (key == 'w') {
+    ship.moving = true;
   }
-  if(key == 's'){
+  if (key == 's') {
     ship.slowing = true;
-  }  
+  }
   if (key == 'a') {
     ship.rotationLeft = true;
   }
@@ -98,10 +98,10 @@ void keyPressed() {
 void keyReleased() {
 
   //ship movement
-    if(key == 'w'){
-   ship.moving = false; 
+  if (key == 'w') {
+    ship.moving = false;
   }
-    if(key == 's'){
+  if (key == 's') {
     ship.slowing = false;
   }
   if (key == 'a') {
