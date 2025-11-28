@@ -1,4 +1,5 @@
 Ship ship;
+Gun gun;
 
 int squareX;
 int squareY;
@@ -13,15 +14,15 @@ void setup() {
   size(800, 800);
   rectMode(CENTER);
   ship = new Ship(width/2, height/2);
+  gun = new Gun();
 }//end setup
 
 void draw() {
-  
-  background(0);
 
+  background(0);
   ship.move();
-  ellipse(width/2, height/2, 10, 10);
- 
+  gun.display();
+
 
   //camera movement
   if (w) {
