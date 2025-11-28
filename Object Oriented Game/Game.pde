@@ -1,10 +1,21 @@
+/*CONTROLS
+W = Throttle up
+S = Throttle down
+A = Turn left
+D = Turn right
+
+SHIFT + WASD = move camera to respective cardinal direction (you can move diagonally)
+Click = Shoot
+
+*/
+
 Ship ship;
 Gun gun;
 //ArrayList<EnemyShip> enemyships = new ArrayList<EnemyShip>();//array of ships
 ArrayList<Bullet> bullets = new ArrayList<Bullet>();//make array of bullets
 ArrayList<AsteroidX> asteroidsX = new ArrayList<AsteroidX>();//array of asteroids
 ArrayList<AsteroidY> asteroidsY = new ArrayList<AsteroidY>();
-ArrayList<Grid> grids = new ArrayList<Grid>();
+ArrayList<Grid> grids = new ArrayList<Grid>();//grid background
 int squareX;
 int squareY;
 float gridX;
@@ -51,6 +62,7 @@ void draw() {
 
     //GRID LAND//
     /////////////
+    
     for (int i =0; i<grids.size(); i++) {
       Grid g = grids.get(i);
       gridX = -25000 + i * 100;
@@ -167,8 +179,7 @@ void draw() {
     } else if ((!d)&&(!a)) {
       squareX = 0;
     }
-    //draw box
-
+    //draw box around screen
     fill(0);
     noStroke();
     rect((-100 + squareX), (400 + squareY), 500, 1400);
@@ -256,15 +267,17 @@ void draw() {
     //ASTEROID DELETER 9000//
     /////////////////////////
   } else { //if dead end
+  //clear everything
     asteroidsX.clear();
     asteroidsY.clear();
     bullets.clear();
     grids.clear();
+    //death screen
     fill(102, 255, 100);
     textSize(100);
     text("You died", 200, 300);
     textSize(20);
-    text("press 'R' to restart!", 300, 600);
+    text("press 'r' to restart!", 300, 600);
   }//else end
 }//end draw
 
