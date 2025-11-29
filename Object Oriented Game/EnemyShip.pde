@@ -7,7 +7,7 @@ class EnemyShip {
   float turretX;
   float turretY;
   float shipAngle;
-  float speed = -1;
+  float speed = -1.5;
   PVector velo;
   PVector position;
   PVector shipVelo;
@@ -35,6 +35,7 @@ class EnemyShip {
     shipAngle = atan2(position.y - turretY, position.x - turretX);
     v = velocity/6;
     r = rotation;
+    speed = speed - 0.001;
     velo = new PVector(0, v);
     shipVelo = new PVector(speed, 0);
     shipVelo.rotate(shipAngle);

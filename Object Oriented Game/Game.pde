@@ -25,6 +25,7 @@ float fakeAcceleration = .3;
 float rotation = 0;
 float rotationAmount = 0.02;
 int maxAsteroids = 40;
+int maxShips = 20;
 int gridSize = 0;
 int gridMax = 500;
 int life = 5;
@@ -52,6 +53,7 @@ void draw() {
 
   background(0);
 
+  println(life);
 
   //check if dead
   if (life <=0) {
@@ -111,13 +113,38 @@ void draw() {
       EnemyShip s = enemyships.get(i);
       s.update(fakeVelocity, rotation);
       s.display();
-      println(s.position);
     }
 
-    //create enemy if there are none
-    if (1>enemyships.size()) {
+    //create enemies
+    if (maxShips>enemyships.size()) {
       enemyships.add(new EnemyShip());
     }
+
+    //destroy bullet and ship if they intersect
+    if ( bullets.size() >= 1 && enemyships.size() >=1) {
+      for (int i =0; i<bullets.size(); i++) {
+        for (int u =0; u<enemyships.size(); u++) {
+          if (bulletcollision(bullets.get(i), enemyships.get(u))) {
+            //delete ship that was collided with
+            enemyships.remove(u);
+            bullets.remove(i);
+            break;
+          }
+        }
+      }
+    }//end bullet and ship intersect
+    
+    //lose life if hit by ship
+     if (enemyships.size() >=1) {
+        for (int u =0; u<enemyships.size(); u++) {
+          if (shipCollision(ship, enemyships.get(u))) {
+            //delete ship that was collided with
+            enemyships.remove(u);
+            life = life -1;
+            break;
+        }
+      }
+    }//end lose life section
     /////////////
     //SHIP LAND//
 
@@ -273,6 +300,7 @@ void draw() {
     asteroidsY.clear();
     bullets.clear();
     grids.clear();
+    enemyships.clear();
     //death screen
     fill(102, 255, 100);
     textSize(100);
@@ -285,7 +313,39 @@ void draw() {
 //COLLISION DETECTOR//
 //////////////////////
 
-//AsteroidX collision
+//Bullet enemy ship collision
+boolean bulletcollision(Bullet b, EnemyShip s) {
+  float bx = b.position.x;
+  float by = b.position.y;
+  float br = b.radius;
+  float sx = s.position.x;
+  float sy = s.position.y;
+  float sr = s.radius;
+  float distanceX = dist (bx, by, sx, sy);
+  if (distanceX < (br-10) + (sr-10)) { //checks if bullet collides with ship
+    return true;
+  } else {
+    return false;
+  }
+}// end bullet enemy collision
+
+//ship and enemy collision
+boolean shipCollision(Ship s, EnemyShip es) {
+  float sx = s.position.x;
+  float sy = s.position.y;
+  float sr = s.radius;
+  float esx = es.position.x;
+  float esy = es.position.y;
+  float esr = es.radius;
+  float distanceX = dist (sx, sy, esx, esy);
+  if (distanceX < (sr-10) + (esr-10)) { //checks if bullet collides with asteroid
+    return true;
+  } else {
+    return false;
+  }
+}//end ship and enemy collision
+
+//Bullet AsteroidX collision
 boolean collision(Bullet b, AsteroidX ax) {
   float bx = b.position.x;
   float by = b.position.y;
@@ -301,7 +361,7 @@ boolean collision(Bullet b, AsteroidX ax) {
   }
 }//end AsteroidX
 
-//AsteroidY collison
+//Bullet AsteroidY collison
 boolean collision(Bullet b, AsteroidY ay) {
   float bx = b.position.x;
   float by = b.position.y;
